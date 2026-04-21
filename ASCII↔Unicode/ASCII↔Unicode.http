@@ -1,0 +1,6 @@
+@ASCII_Unicode_HostAddress = http://localhost:5043
+
+GET {{ASCII_Unicode_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
