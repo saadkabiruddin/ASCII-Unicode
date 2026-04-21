@@ -16,11 +16,8 @@ public class Program
 
         var app = builder.Build();
 
-        if (app.Environment.IsDevelopment())
-        {
-            app.MapOpenApi();
-            app.MapScalarApiReference("/swagger");
-        }
+        app.MapOpenApi();
+        app.MapScalarApiReference("/scalar");
 
         app.UseHttpsRedirection();
 
