@@ -1,3 +1,4 @@
+using ASCII_Unicode.Services;
 using Scalar.AspNetCore;
 
 namespace ASCII_Unicode;
@@ -10,6 +11,11 @@ public class Program
 
         builder.Services.AddControllers();
         builder.Services.AddOpenApi();
+
+        // Register conversion mappings loader and file watcher
+        builder.Services.AddSingleton<ConversionMappingsLoader>();
+        builder.Services.AddScoped<BijoyToUnicodeConverter>();
+        builder.Services.AddHostedService<FileWatcherService>();
 
         var app = builder.Build();
 

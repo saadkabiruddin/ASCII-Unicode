@@ -2,7 +2,21 @@ namespace ASCII_Unicode.Services;
 
 public sealed class UnicodeConverter
 {
-    private static bool IsBanglaDigit(char c) => c >= '০' && c <= '৯';
+    private readonly ConversionMappingsLoader? _mappingsLoader;
+    private readonly ILogger<UnicodeConverter>? _logger;
+
+    public UnicodeConverter()
+    {
+        // Parameterless constructor for backward compatibility when not using DI
+    }
+
+    public UnicodeConverter(ConversionMappingsLoader mappingsLoader, ILogger<UnicodeConverter> logger)
+    {
+        _mappingsLoader = mappingsLoader;
+        _logger = logger;
+    }
+
+    private static bool IsBanglaDigit(char c) => c >= '०' && c <= '९';
 
     private static bool IsBanglaPreKar(char c) => c is 'ি' or 'ৈ' or 'ে';
 
@@ -306,7 +320,13 @@ public sealed class UnicodeConverter
         srcString = ConverterUtil.PregReplace("য়", "য়", srcString);
 
         srcString = ReArranceUnicodeTextForASCI(srcString);
-        srcString = ConverterUtil.DoCharMap(srcString, ConverterData.MainCharMap);
+
+        // Use JSON-loaded mappings if available, otherwise fall back to hardcoded data
+        var mainCharMap = _mappingsLoader != null
+            ? ConversionMappingsLoader.ToKeyValuePairs(_mappingsLoader.LoadMappings().MainCharMap)
+            : ConverterData.MainCharMap;
+
+        srcString = ConverterUtil.DoCharMap(srcString, mainCharMap);
 
         if (srcString.EndsWith('©'))
         {

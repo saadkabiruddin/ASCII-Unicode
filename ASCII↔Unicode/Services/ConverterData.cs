@@ -213,7 +213,8 @@ internal static class ConverterData
         new("ú", "্প"),
         new("û", "হু"),
         new("ü", "হৃ"),
-        new("ÿ", "ক্ষ"),
+        //new("ÿ", "ক্ষ"),
+        new("\u00FF", "ক্ষ"),
         new("ý", "হ্ন"),
         new("þ", "হ্ম")
     ];

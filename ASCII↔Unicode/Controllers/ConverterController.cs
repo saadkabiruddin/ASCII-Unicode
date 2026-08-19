@@ -8,6 +8,20 @@ namespace ASCII_Unicode.Controllers;
 [Route("")]
 public sealed class ConverterController : ControllerBase
 {
+    private readonly BijoyToUnicodeConverter _bijoyConverter;
+    private readonly ConversionMappingsLoader _mappingsLoader;
+    private readonly ILoggerFactory _loggerFactory;
+
+    public ConverterController(
+        BijoyToUnicodeConverter bijoyConverter,
+        ConversionMappingsLoader mappingsLoader,
+        ILoggerFactory loggerFactory)
+    {
+        _bijoyConverter = bijoyConverter;
+        _mappingsLoader = mappingsLoader;
+        _loggerFactory = loggerFactory;
+    }
+
     [HttpGet("health")]
     public ActionResult<TextResponse> Health()
     {
@@ -17,14 +31,16 @@ public sealed class ConverterController : ControllerBase
     [HttpPost("unicode-to-bijoy")]
     public ActionResult<TextResponse> UnicodeToBijoy([FromBody] TextRequest payload)
     {
-        var result = new UnicodeConverter().ConvertUnicodeToBijoy(payload.Text);
+        var logger = _loggerFactory.CreateLogger<UnicodeConverter>();
+        var converter = new UnicodeConverter(_mappingsLoader, logger);
+        var result = converter.ConvertUnicodeToBijoy(payload.Text);
         return new TextResponse { Text = result };
     }
 
     [HttpPost("bijoy-to-unicode")]
     public ActionResult<TextResponse> BijoyToUnicode([FromBody] TextRequest payload)
     {
-        var result = new BijoyToUnicodeConverter().ConvertBijoyToUnicode(payload.Text);
+        var result = _bijoyConverter.ConvertBijoyToUnicode(payload.Text);
         return new TextResponse { Text = result };
     }
 }
