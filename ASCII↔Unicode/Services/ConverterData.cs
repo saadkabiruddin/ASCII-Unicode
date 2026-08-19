@@ -13,7 +13,7 @@ internal static class ConverterData
         new("„&", "„"),
         new("‡u", "u‡"),
         new("wu", "uw"),
-        new(" ,", ","),
+        //new(" ,", ","),
         new(" \\|", "\\|"),
         new("\\\\ ", ""),
         new(" \\\\", ""),
@@ -213,6 +213,7 @@ internal static class ConverterData
         new("ú", "্প"),
         new("û", "হু"),
         new("ü", "হৃ"),
+        new("ÿ", "ক্ষ"),
         new("ý", "হ্ন"),
         new("þ", "হ্ম")
     ];

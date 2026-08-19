@@ -115,7 +115,8 @@ public sealed class UnicodeConverter
             if (i > 0
                 && ConverterUtil.MbCharAt(text, i) == '\u09CD'
                 && (IsBanglaKar(ConverterUtil.MbCharAt(text, i - 1)) || IsBanglaNukta(ConverterUtil.MbCharAt(text, i - 1)))
-                && i < ConverterUtil.MbStrLen(text) - 1)
+                && i < ConverterUtil.MbStrLen(text) - 1
+                && IsBanglaBanjonborno(ConverterUtil.MbCharAt(text, i + 1)))
             {
                 var temp = ConverterUtil.SubString(text, 0, i - 1);
                 temp += ConverterUtil.MbCharAt(text, i);
